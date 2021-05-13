@@ -12,6 +12,8 @@ from difflib import SequenceMatcher
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
+class CalendarNotFoundException(Exception):
+    pass
 
 class CalendarChecker:
     """
@@ -136,6 +138,7 @@ class CalendarChecker:
             if similar(calendar_list_entry['summary'], self.args["calendar_name"]) > 0.8:
                 self.chosen_calendar = calendar_list_entry['id']
                 return
+        raise CalendarNotFoundException("No calendar with the provided name was found")
 
 
 def similar(a, b):
